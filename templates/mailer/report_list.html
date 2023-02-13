@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block btns %}
+    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="{% url 'mailer:home' %}" class="nav-link px-2 link-light">Home page</a></li>
+        <li><a href="{% url 'mailer:distributions' %}" class="nav-link px-2 link-warning">Distributions</a></li>
+    </ul>
+{% endblock %}
+{% block content %}
+    <div class="container p-4">
+    <table class="table table-hover table-sm col-11 mx-auto">
+        <thead>
+        <tr>
+            <th scope="col">Last send</th>
+            <th scope="col">Status</th>
+            <th scope="col">Response</th>
+        </tr>
+        </thead>
+        <tbody class="table-group-divider">
+        {% for response in report_list %}
+            <tr>
+                <td>{{ response.time|date:'d.m.y | H:i:s' }}</td>
+                <td>{{ response.status }}</td>
+                <td>{{ response.response }}</td>
+                {% empty %}
+                <div class="card text-bg-light position-absolute top-50 start-50 translate-middle">
+                    <div class="card-text height fs-5">Here`s empty yet</div>
+                </div>
+            </tr>
+            </tbody>
+            </table>
+            </div>
+        {% endfor %}
+{% endblock %}

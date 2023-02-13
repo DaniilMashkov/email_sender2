@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load hitcount_tags %}
+{% block btns %}
+    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="{% url 'mailer:home' %}" class="nav-link px-2 link-light">Home page</a></li>
+        {% if perms.blog.add_blog %}
+        <li><a href="{% url 'blog:create_blog' %}" class="nav-link px-2 link-danger">Write new article</a></li>
+        {% endif %}
+    </ul>
+{% endblock %}
+{% block content %}
+    <div class="row row-cols-1 row-cols-md-3 g-4 p-2 mx-auto col-11">
+        {% for blog in blog_list %}
+            <div class="col">
+                <div class="card">
+                    <img src="{% media_path blog.preview %}" class="card-img-top "
+                         style="object-fit:contain; max-height: 200px">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ blog.title }}</h5>
+                        <p class="card-text">{{ blog.content|slice:50 }}</p>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        {% if perms.blog.add_blog %}
+                        <div class="btn-group">
+                            <a class="btn btn-sm link-warning btn-outline-secondary" href="{% url 'blog:blog_upd' blog.pk %}">Edit</a>
+                            <a class="btn btn-sm link-danger btn-outline-secondary" href="{% url 'blog:blog_delete' blog.pk %}">Delete</a>
+                        </div>
+                        {% endif %}
+                        <div class="btn-group">
+                            <a class="btn btn-sm link-warning btn-outline-secondary" href="{% url 'blog:blog_detail' blog.pk %}">Read</a>
+                        </div>
+                        <small class="text-muted">Views: {% get_hit_count for blog %}</small>
+                        <small class="text-muted">{{ blog.created_at }}</small>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card text-center col-4 mx-auto">
+  <div class="card-body">
+    <p class="card-text height fs-5">Activation link has been sent to your email</p>
+          <p><a class="btn btn-outline-primary btn" href="{% url 'mailer:home' %}">To main page</a></p>
+  </div>
+</div>
+{% endblock %}

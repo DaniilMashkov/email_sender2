@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load hitcount_tags %}
+{% block btns %}
+    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+
+        {% if perms.blog.add_blog %}
+            <li><a href="{% url 'blog:blog' %}" class="nav-link px-2 link-danger">Manage blog</a></li>
+        {% endif %}
+        {% if perms.mailer.deactivate_user %}
+            <li><a href="{% url 'mailer:distributions_management' %}" class="nav-link px-2 link-danger">Manage distributions</a></li>
+        {% endif %}
+        {% if user.is_authenticated and not perms.blog.add_blog and not perms.mailer.deactivate_user %}
+        <li><a href="{% url 'mailer:reports' %}" class="nav-link px-2 link-light">Reports</a></li>
+        <li><a href="{% url 'mailer:distributions' %}" class="nav-link px-2 link-warning">Distributions</a></li>
+        {% endif %}
+    </ul>
+{% endblock %}
+{% block content %}
+    <div class="card-group py-4 col-10 mx-auto">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title text-center">Total distributions</h5>
+                <p class="card-text text-center" style="color: red; font-size: 25px"> {{ distributions.count }} </p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title text-center">Active distributions</h5>
+                <p class="card-text text-center"
+                   style="color: red; font-size: 25px">{{ active_distributions.count }}</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title text-center">Total customers</h5>
+                <p class="card-text text-center" style="color: red; font-size: 25px">{{ users.count }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="album py-5">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                {% for blog in articles %}
+                    {% if blog.status %}
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <img src="{% media_path blog.preview %}" class="card-img-top "
+                         style="object-fit:contain; max-height: 200px">
+                            <div class="card-body">
+                                <p class="text-center">{{ blog.title }}</p>
+                                <p class="card-text">{{ blog.content }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <a class="btn btn-sm btn-outline-secondary" href="{% url 'blog:blog_detail' blog.pk %}">Read</a>
+                                    </div>
+                                    <small class="text-muted">Views: {% get_hit_count for blog %}</small>
+                                    <small class="text-muted">{{ blog.created_at }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <p></p><a class="nav-link link-light text-center" href="{% url 'blog:blog' %}"> All articles >> </a>
+        </div>
+    </div>
+{% endblock %}

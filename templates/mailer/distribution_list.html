@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block btns %}
+    <ul class="nav col-11 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="{% url 'mailer:home' %}" class="nav-link px-2 link-light">Home page</a></li>
+        {% if not perms.mailer.deactivate_user %}
+            <li><a href="{% url 'mailer:reports' %}" class="nav-link px-2 link-light">Reports</a></li>
+            <li><a href="{% url 'mailer:messages' %}" class="nav-link px-2 link-warning">Messages</a></li>
+            <li><a href="{% url 'mailer:recipients' %}" class="nav-link px-2 link-warning">Recipients</a></li>
+            <li><a href="{% url 'mailer:create_distribution' %}" class="nav-link px-2 link-danger">Create new
+                distribution</a></li>
+        {% endif %}
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <div class="album py-5">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 g-3">
+            <div class="col mx-auto">
+                <table class="table table-hover table-responsive-xxl">
+                    <thead>
+                    {% for dist in distribution_list %}
+                        <tr>
+                            <th scope="col">Send time</th>
+                            <th scope="col">Periodicity</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                        <tr>
+                            <td>{{ dist.timer }}</td>
+                            <td>{{ dist.periodicity }}</td>
+                            <td>{{ dist.status }}</td>
+                            <td>
+                                {% if not perms.mailer.deactivate_user %}
+                                    <a class="btn btn-sm link-warning"
+                                       href="{% url 'mailer:distribution_upd' dist.pk %}">Edit</a>
+                                    <a class="btn btn-sm link-danger"
+                                       href="{% url 'mailer:distribution_del' dist.pk %}">Delete</a>
+                                {% else %}
+                                    {% if dist.is_active %}
+                                        <a class="btn btn-sm btn-outline-danger"
+                                           href="{% url 'mailer:switch_distribution_status' dist.pk %}">disable</a>
+                                    {% else %}
+                                        <a class="btn btn-sm btn-outline-success"
+                                           href="{% url 'mailer:switch_distribution_status' dist.pk %}">enable</a>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <div class="card text-bg-light position-absolute top-50 start-50 translate-middle">
+                            <div class="card-text height fs-5">Here`s empty yet</div>
+                        </div>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% if perms.mailer.deactivate_user %}
+            <div class="col mx-auto">
+                <table class="table table-hover table-responsive-xxl">
+                    <thead>
+                    {% for user in manage_users %}
+                    <tr>
+                        <th scope="col">User</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                        <tr>
+                            <td>{{ user.email }}</td>
+                            <td>
+                                {% if user.is_active %}
+                                    <a class="btn btn-sm btn-outline-danger"
+                                       href="{% url 'mailer:switch_user_status' user.pk %}">disable</a>
+                                {% else %}
+                                    <a class="btn btn-sm btn-outline-success"
+                                       href="{% url 'mailer:switch_user_status' user.pk %}">enable</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+{% endblock %}

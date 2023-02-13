@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block btns %}
+    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="{% url 'mailer:home' %}" class="nav-link px-2 link-light">Home page</a></li>
+        <li><a href="{% url 'mailer:reports' %}" class="nav-link px-2 link-light">Reports</a></li>
+        <li><a href="{% url 'mailer:distributions' %}" class="nav-link px-2 link-warning">Distributions</a></li>
+        <li><a href="{% url 'mailer:messages' %}" class="nav-link px-2 link-warning">Messages</a></li>
+        <li><a href="{% url 'mailer:create_recipient' %}" class="nav-link px-2 link-danger">Add recipient</a></li>
+
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <div class="col-11 mx-auto">
+        <table class="table table-hover table-responsive-xxl">
+            <thead>
+                <tr>
+                    <th scope="col">Recipient address</th>
+                </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                {% for recipient in recipient_list %}
+                <tr>
+                    <td>{{ recipient.address }}</td>
+                    <td>
+                        <a class="nav-link px-2 link-warning"
+                           href="{% url 'mailer:recipient_upd' recipient.pk %}">Edit</a>
+                        <a class="nav-link px-2 link-danger" href="{% url 'mailer:recipients_del' recipient.pk %}">Delete</a>
+
+                    </td>
+                </tr>
+            {% empty %}
+                <div class="card text-bg-light position-absolute top-50 start-50 translate-middle">
+                    <div class="card-text height fs-5">Here`s empty yet</div>
+                </div>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

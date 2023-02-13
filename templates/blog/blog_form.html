@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block btns %}
+    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="{% url 'mailer:home' %}" class="nav-link px-2 link-light">Home page</a></li>
+        <li><a href="{% url 'blog:blog' %}" class="nav-link px-2 link-danger">All articles</a></li>
+    </ul>
+{% endblock %}
+{% block content %}
+    <div class="card text-center col-8 mx-auto">
+        <div class="card-body">
+            <p class="card-text height fs-5">New article</p>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form }}
+                <p></p>
+                <a class="btn btn-outline-danger" href="{% url 'blog:blog' %}" > Cancel </a>
+                <button type="submit" class="btn btn-outline-light btn">Save</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

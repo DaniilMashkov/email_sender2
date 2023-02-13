@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Delete{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="card text-center position-absolute top-50 start-50 translate-middle">
+            Confirm delete
+            <div class="card-header">
+                {{ form|crispy }}
+            </div>
+            <div class="card-body"> {{ recipient.address }} </div>
+            <div class="btn-group" role="group" aria-label="Basic outlined example">
+                <a class="btn btn-outline-danger" href="{% url 'mailer:recipients' %}">Decline</a>
+                <button type="submit" class="btn btn-outline-light" href="#">Confirm</button>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}

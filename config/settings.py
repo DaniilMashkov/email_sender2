@@ -2,7 +2,6 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 dot_env = os.path.join(BASE_DIR, '.env')
@@ -14,9 +13,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
-# Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -25,9 +21,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'users',
     'blog',
+    'crispy_forms',
+    'django_crontab',
+    'hitcount',
     'mailer',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -96,6 +95,8 @@ STATICFILES_DIRS = [(BASE_DIR/'static')]
 MEDIA_ROOT = BASE_DIR/'media'
 MEDIA_URL = '/media/'
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -109,6 +110,7 @@ EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 CACHE_ENABLED = os.getenv('CACHE_ENABLED')
 
@@ -118,3 +120,7 @@ CACHES = {
         'LOCATION': 'redis://127.0.0.1:6379'
     }
 }
+
+CRONJOBS = [
+    ('*/1 * * * *', 'django.core.management.call_command', ['start_delivery'])
+]

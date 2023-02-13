@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block btns %}
+    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="{% url 'mailer:home' %}" class="nav-link px-2 link-light">Home page</a></li>
+        <li><a href="{% url 'mailer:distributions' %}" class="nav-link px-2 link-danger">Distributions</a></li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <form method="post" class="row-cols-3">
+
+        {% csrf_token %}
+
+        <div class="card text-center position-absolute top-50 start-50 translate-middle">
+            <div class="card-header"> distribution
+                <style>
+                    ::-webkit-scrollbar {
+                        width: 0;
+                        height: 0;
+                    }
+                </style>
+                {{ form|crispy }}
+            </div>
+            <div class="card-body gap-5" role="group" aria-label="Basic outlined example">
+                <div class="row-cols-3">
+                    <button type="submit" class="btn btn-outline-light">Apply</button>
+                    <a class="btn btn-outline-danger" href="{% url 'mailer:distributions' %}">Discard</a>
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block header %}
+    <div class="container p-2 mb-0 border-bottom">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-star">
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"></ul>
+            <a class="btn btn-outline-danger px-2 link-light" href="{% url 'mailer:home' %}">Main page</a>
+        </div>
+    </div>
+
+{% endblock %}
+{% block content %}
+    <div class="card text-center position-absolute top-50 start-50 translate-middle">
+        <div class="card-body">
+            <p class="card-text height fs-5 ">Sign up</p>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form }}
+                <p></p><a href="{% url 'login' %}" class="nav-link px-2 link-danger">I have an account</a>
+                <p></p><button type="submit" class="btn btn-outline-primary btn">Sign up</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

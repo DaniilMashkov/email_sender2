@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Delete{% endblock %}
+
+{% block content %}
+<form method="post">
+{% csrf_token %}
+
+    <div class="card text-center position-absolute top-50 start-50 translate-middle">
+      <div class="card-header">
+                Are you sure to delete?
+                <div class="card-body">
+                    <p>{{ message.title }} </p>
+                    <button type="submit" class="btn btn-outline-danger">Confirm</button>
+                    <a class="btn btn-outline-light" href="{% url 'mailer:messages' %}">Discard</a>
+                </div>
+            </div>
+    </div>
+</form>
+
+{% endblock %}

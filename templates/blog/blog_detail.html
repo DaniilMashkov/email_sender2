@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load hitcount_tags %}
+{% block btns %}
+    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="{% url 'mailer:home' %}" class="nav-link px-2 link-light">Home Page</a></li>
+        <li><a href="{% url 'blog:blog' %}" class="nav-link px-2 link-danger">All articles</a></li>
+    </ul>
+{% endblock %}
+{% block content %}
+<div class="card mb-3 col-10 mx-auto">
+  <p><img src="/media/{{blog.preview}}" class="card-img-top" style="object-fit:contain; max-height: 200px"></p>
+  <div class="card-body">
+    <h5 class="card-title">{{ blog.title }}</h5>
+    <p class="card-text"> {{ blog.content }}.</p>
+    <p class="card-text"><small class="text-muted">Views: {% get_hit_count for blog %}</small></p>
+    <p class="card-text"><small class="text-muted">{{ blog.created_at }}</small></p>
+  </div>
+</div>
+
+
+{% endblock content %}
